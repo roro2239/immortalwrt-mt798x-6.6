@@ -47,7 +47,8 @@
 - 已新增 GitHub Actions 测试构建工作流，使用当前仓库源码直接编译，不再额外指定源码地址。
 - 构建工作流已固定使用 `defconfig/cudy-tr3000-v1-256mb.config`，移除固件名、系统名、WiFi 名称、后台地址和额外安装包定制步骤。
 - 构建工作流已加入 `actions: read` 权限与缓存恢复逻辑，准备规避 `Resource not accessible by integration` 报错并缩短重复构建时间。
+- 构建工作流已补 Runner 环境清理、磁盘/内存观测、`4G` swap 与保守并行度，优先缓解 GitHub Actions 存储与内存不足问题。
 
 ## 下一步
 
-- 校验 GitHub Actions 工作流 YAML 内容与缓存策略是否符合仓库实际构建路径。
+- 补提 `defconfig/cudy-tr3000-v1-256mb.config`，否则远端工作流仍无法复制目标配置文件。
