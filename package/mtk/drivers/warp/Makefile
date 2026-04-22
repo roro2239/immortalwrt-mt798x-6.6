@@ -76,13 +76,21 @@ define KernelPackage/warp/install
 		if [ "$$(CONFIG_WARP_NEW_FW)" = "y" ]; then \
 			cp ./files/$$(MT7981_NEW_WOFW_DIR)/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
 		else \
-			cp $(PKG_BUILD_DIR)/bin/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			if ls $(PKG_BUILD_DIR)/bin/7981*WOCPU*_RAM_CODE_release.bin >/dev/null 2>&1; then \
+				cp $(PKG_BUILD_DIR)/bin/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			else \
+				cp ./files/$$(MT7981_NEW_WOFW_DIR)/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			fi; \
 		fi; \
 	elif [ "$$(CONFIG_WARP_CHIPSET)" = "mt7986" ]; then \
 		if [ "$$(CONFIG_WARP_NEW_FW)" = "y" ]; then \
 			cp ./files/$$(MT7986_NEW_WOFW_DIR)/7986*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
 		else \
-			cp $(PKG_BUILD_DIR)/bin/7986*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			if ls $(PKG_BUILD_DIR)/bin/7986*WOCPU*_RAM_CODE_release.bin >/dev/null 2>&1; then \
+				cp $(PKG_BUILD_DIR)/bin/7986*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			else \
+				cp ./files/$$(MT7986_NEW_WOFW_DIR)/7986*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			fi; \
 		fi; \
 	fi
 endef

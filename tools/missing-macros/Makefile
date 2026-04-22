@@ -21,8 +21,10 @@ endef
 define Host/Install
 	$(INSTALL_DIR) $(STAGING_DIR_HOST)/share/aclocal
 	$(INSTALL_DATA) $(HOST_BUILD_DIR)/m4/*.m4 $(STAGING_DIR_HOST)/share/aclocal/
-	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin
-	$(INSTALL_BIN) $(HOST_BUILD_DIR)/bin/* $(STAGING_DIR_HOST)/bin/
+	if [ -d "$(HOST_BUILD_DIR)/bin" ]; then \
+		$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin; \
+		$(INSTALL_BIN) $(HOST_BUILD_DIR)/bin/* $(STAGING_DIR_HOST)/bin/; \
+	fi
 	$(LN) makeinfo $(STAGING_DIR_HOST)/bin/texi2any
 	$(LN) makeinfo $(STAGING_DIR_HOST)/bin/texi2pdf
 	$(LN) makeinfo $(STAGING_DIR_HOST)/bin/texi2dvi
