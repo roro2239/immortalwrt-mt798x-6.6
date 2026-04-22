@@ -41,7 +41,13 @@
 - 已将 `router-webui` 的集成点从平台默认包层移回设备配置层。
 - 首页模块已扩展为网络概览、无线网络、接入设备、系统服务、快捷入口。
 - Web 入口已改为独立 `custom` / `official` 双实例，不再继续复用 `uhttpd.main` 作为主实现。
+- 已确认测试设备为 `Cudy TR3000 v1 256MB`，对应设备定义为 `cudy_tr3000-v1-256mb`。
+- 已新增设备专用配置 `defconfig/cudy-tr3000-v1-256mb.config`。
+- 设备专用配置已从通用 `mt7981-ax3000` 多机型配置收口为 `TR3000 256MB` 单设备配置，并保留 `router-webui`。
+- 已新增 GitHub Actions 测试构建工作流，使用当前仓库源码直接编译，不再额外指定源码地址。
+- 构建工作流已固定使用 `defconfig/cudy-tr3000-v1-256mb.config`，移除固件名、系统名、WiFi 名称、后台地址和额外安装包定制步骤。
+- 构建工作流已加入 `actions: read` 权限与缓存恢复逻辑，准备规避 `Resource not accessible by integration` 报错并缩短重复构建时间。
 
 ## 下一步
 
-- 如需继续扩展，再补登录态复用与配置写回能力。
+- 校验 GitHub Actions 工作流 YAML 内容与缓存策略是否符合仓库实际构建路径。
