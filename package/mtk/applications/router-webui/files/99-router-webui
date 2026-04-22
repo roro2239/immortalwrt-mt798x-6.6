@@ -1,0 +1,53 @@
+#!/bin/sh
+
+uci -q batch <<'EOF'
+set uhttpd.main.enabled='0'
+
+delete uhttpd.custom
+delete uhttpd.official
+
+add uhttpd uhttpd
+rename uhttpd.@uhttpd[-1]='custom'
+set uhttpd.custom.enabled='1'
+set uhttpd.custom.home='/www-custom'
+set uhttpd.custom.cgi_prefix='/cgi-bin'
+set uhttpd.custom.rfc1918_filter='1'
+set uhttpd.custom.max_requests='3'
+set uhttpd.custom.max_connections='100'
+set uhttpd.custom.script_timeout='60'
+set uhttpd.custom.network_timeout='30'
+set uhttpd.custom.http_keepalive='20'
+set uhttpd.custom.tcp_keepalive='1'
+set uhttpd.custom.cert='/etc/uhttpd.crt'
+set uhttpd.custom.key='/etc/uhttpd.key'
+set uhttpd.custom.redirect_https='0'
+add_list uhttpd.custom.listen_http='0.0.0.0:80'
+add_list uhttpd.custom.listen_http='[::]:80'
+add_list uhttpd.custom.listen_https='0.0.0.0:443'
+add_list uhttpd.custom.listen_https='[::]:443'
+
+add uhttpd uhttpd
+rename uhttpd.@uhttpd[-1]='official'
+set uhttpd.official.enabled='1'
+set uhttpd.official.home='/www-official'
+set uhttpd.official.cgi_prefix='/cgi-bin'
+set uhttpd.official.rfc1918_filter='1'
+set uhttpd.official.max_requests='3'
+set uhttpd.official.max_connections='100'
+set uhttpd.official.script_timeout='60'
+set uhttpd.official.network_timeout='30'
+set uhttpd.official.http_keepalive='20'
+set uhttpd.official.tcp_keepalive='1'
+set uhttpd.official.ubus_prefix='/ubus'
+set uhttpd.official.ubus_socket='/var/run/ubus/ubus.sock'
+add_list uhttpd.official.listen_http='0.0.0.0:2239'
+add_list uhttpd.official.listen_http='[::]:2239'
+add_list uhttpd.official.lua_prefix='/cgi-bin/luci=/usr/lib/lua/luci/sgi/uhttpd.lua'
+add_list uhttpd.official.alias='/luci-static=/www/luci-static'
+
+commit uhttpd
+EOF
+
+rm -f /tmp/luci-indexcache
+
+exit 0

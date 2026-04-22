@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>路由器管理中心</title>
+	<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+	<div class="page-shell">
+		<header class="hero">
+			<div class="hero-copy">
+				<p class="eyebrow">Router Center</p>
+				<h1>设备总控台</h1>
+				<p class="hero-desc">
+					集中查看联网状态、无线网络、接入设备与系统服务，常用入口直接到位。
+				</p>
+				<div class="hero-actions">
+					<a class="primary-btn" id="official-link" href="#" target="_blank" rel="noopener noreferrer">高级管理</a>
+					<button class="secondary-btn" id="refresh-button" type="button">刷新状态</button>
+				</div>
+			</div>
+			<div class="hero-panel">
+				<div class="mini-stat">
+					<span class="mini-label">设备名称</span>
+					<strong id="hostname">加载中</strong>
+				</div>
+				<div class="mini-stat">
+					<span class="mini-label">LAN 地址</span>
+					<strong id="lan-ip">加载中</strong>
+				</div>
+				<div class="mini-stat">
+					<span class="mini-label">运行时长</span>
+					<strong id="uptime">加载中</strong>
+				</div>
+				<div class="mini-stat">
+					<span class="mini-label">在线终端</span>
+					<strong id="hero-client-count">加载中</strong>
+				</div>
+			</div>
+		</header>
+
+		<main class="dashboard-grid">
+			<section class="status-card network-card">
+				<div class="card-head">
+					<span class="card-tag">网络</span>
+					<h2>WAN 状态</h2>
+				</div>
+				<div class="card-content">
+					<div class="metric-row">
+						<span>连接状态</span>
+						<strong id="wan-status">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>协议</span>
+						<strong id="wan-proto">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>IPv4 地址</span>
+						<strong id="wan-ip">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>负载均值</span>
+						<strong id="loadavg">加载中</strong>
+					</div>
+				</div>
+			</section>
+
+			<section class="status-card wifi-card">
+				<div class="card-head">
+					<span class="card-tag">无线</span>
+					<h2>Wi-Fi 总览</h2>
+				</div>
+				<div class="card-content">
+					<div class="metric-row">
+						<span>启用 SSID</span>
+						<strong id="wifi-count">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>接入终端估算</span>
+						<strong id="wifi-client-count">加载中</strong>
+					</div>
+					<div class="metric-list">
+						<span>当前 SSID</span>
+						<ul id="ssid-list">
+							<li>加载中</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="status-card client-card">
+				<div class="card-head">
+					<span class="card-tag">终端</span>
+					<h2>接入设备</h2>
+				</div>
+				<div class="card-content">
+					<div class="metric-row">
+						<span>在线终端</span>
+						<strong id="client-count">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>LAN 地址</span>
+						<strong id="client-lan-ip">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>设备名称</span>
+						<strong id="client-hostname">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>常用入口</span>
+						<strong>终端管理 / DHCP / 防火墙</strong>
+					</div>
+				</div>
+			</section>
+
+			<section class="status-card system-card">
+				<div class="card-head">
+					<span class="card-tag">系统</span>
+					<h2>系统服务</h2>
+				</div>
+				<div class="card-content">
+					<div class="metric-row">
+						<span>内存占用</span>
+						<strong id="memory-usage">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>最高温度</span>
+						<strong id="max-temp">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>设备型号</span>
+						<strong id="board-name">加载中</strong>
+					</div>
+					<div class="metric-row">
+						<span>固件版本</span>
+						<strong id="firmware">加载中</strong>
+					</div>
+				</div>
+			</section>
+
+			<section class="status-card shortcut-card">
+				<div class="card-head">
+					<span class="card-tag">快捷入口</span>
+					<h2>常用操作</h2>
+				</div>
+				<div class="shortcut-grid">
+					<a class="shortcut-item" id="shortcut-official" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="shortcut-title">高级管理</span>
+						<span class="shortcut-desc">进入完整 LuCI 后台</span>
+					</a>
+					<a class="shortcut-item" id="shortcut-network" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="shortcut-title">网络设置</span>
+						<span class="shortcut-desc">WAN、LAN、接口与协议</span>
+					</a>
+					<a class="shortcut-item" id="shortcut-wireless" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="shortcut-title">无线设置</span>
+						<span class="shortcut-desc">SSID、加密、信道与功率</span>
+					</a>
+					<a class="shortcut-item" id="shortcut-system" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="shortcut-title">系统服务</span>
+						<span class="shortcut-desc">服务、启动项与维护</span>
+					</a>
+				</div>
+			</section>
+		</main>
+
+		<section class="notice-bar" id="status-message">正在加载设备状态...</section>
+	</div>
+
+	<script src="/assets/app.js"></script>
+</body>
+</html>
