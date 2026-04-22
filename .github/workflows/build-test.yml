@@ -62,10 +62,15 @@ jobs:
       - name: 创建 swap
         shell: bash
         run: |
-          sudo fallocate -l 4G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
+          if sudo swapon --show=NAME --noheadings | grep -q .; then
+            echo "检测到 Runner 已存在可用 swap，直接复用。"
+          else
+            SWAP_PATH=/mnt/immortalwrt.swap
+            sudo fallocate -l 4G "${SWAP_PATH}"
+            sudo chmod 600 "${SWAP_PATH}"
+            sudo mkswap "${SWAP_PATH}"
+            sudo swapon "${SWAP_PATH}"
+          fi
           echo "swap 已启用:"
           sudo swapon --show
           free -h
