@@ -89,7 +89,8 @@ jobs:
             swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev zstd
 
       - name: 恢复构建缓存
-        uses: actions/cache@v4
+        id: restore-build-cache
+        uses: actions/cache/restore@v4
         with:
           path: |
             dl
@@ -97,10 +98,11 @@ jobs:
             staging_dir/host
             staging_dir/hostpkg
             staging_dir/toolchain-*
-          key: ${{ runner.os }}-openwrt-tr3000-${{ hashFiles('defconfig/cudy-tr3000-v1-256mb.config', 'feeds.conf.default', 'Makefile', '.github/workflows/build-test.yml') }}
+          key: ${{ runner.os }}-openwrt-tr3000-${{ github.ref_name }}-${{ hashFiles('defconfig/cudy-tr3000-v1-256mb.config', 'feeds.conf.default', 'Makefile', '.github/workflows/build-test.yml') }}-${{ github.run_id }}
           restore-keys: |
+            ${{ runner.os }}-openwrt-tr3000-${{ github.ref_name }}-${{ hashFiles('defconfig/cudy-tr3000-v1-256mb.config', 'feeds.conf.default', 'Makefile', '.github/workflows/build-test.yml') }}-
+            ${{ runner.os }}-openwrt-tr3000-${{ github.ref_name }}-
             ${{ runner.os }}-openwrt-tr3000-
-            ${{ runner.os }}-openwrt-
 
       - name: 更新并安装 feeds
         run: |
@@ -134,6 +136,18 @@ jobs:
           ccache -s || true
           df -h
           free -h
+
+      - name: 保存构建缓存
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            dl
+            .ccache
+            staging_dir/host
+            staging_dir/hostpkg
+            staging_dir/toolchain-*
+          key: ${{ steps.restore-build-cache.outputs.cache-primary-key }}
 
       - name: 上传固件产物
         if: success()

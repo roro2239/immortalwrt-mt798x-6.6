@@ -36,8 +36,8 @@
 - 当前聚焦 GitHub Actions 构建工作流稳定性修复。
 - 已定位 CI 失败根因为 Runner 默认占用系统 `/swapfile`，直接执行 `fallocate /swapfile` 会触发 `Text file busy`。
 - 已将工作流 swap 策略调整为“优先复用现有 swap；仅在无可用 swap 时创建 `/mnt/immortalwrt.swap`”，避免继续改写系统级 `/swapfile`。
-- 当前修复仅涉及 `.github/workflows/build-test.yml`，未扩散到构建树其他模块。
+- 已将构建缓存改为显式 `restore/save` 双阶段，并使用 `run_id` 生成新 key，确保每次成功构建后都会写入更新后的缓存，而不是长期复用固定旧 key。
 
 ## 下一步
 
-- 重新触发 GitHub Actions，确认 swap 步骤通过并继续观察后续编译阶段是否还有资源瓶颈。
+- 重新触发 GitHub Actions，确认缓存恢复命中最近可用项，且成功构建后生成新的缓存条目。
