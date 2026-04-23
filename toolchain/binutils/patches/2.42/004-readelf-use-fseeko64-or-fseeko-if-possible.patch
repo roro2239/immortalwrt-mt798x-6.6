@@ -1,169 +1,36 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Codex <codex@example.com>
-Date: Thu, 23 Apr 2026 10:00:00 +0800
-Subject: [PATCH] binutils: readelf: use fseeko64 or fseeko if possible
+Date: Thu, 23 Apr 2026 10:30:00 +0800
+Subject: [PATCH] binutils: readelf: avoid off64_t on musl host builds
 
-Backport upstream readelf large-file handling so musl-based host builds can
-fall back to off_t/fseeko when off64_t/fseeko64 are not exposed by default.
+binutils 2.42 uses off64_t/fseeko64 when HAVE_FSEEKO64 is detected.
+On musl host builds the function probe may succeed while the declarations
+are not exposed to readelf.c, causing host tool compilation to fail with:
 
---- a/binutils/config.in
-+++ b/binutils/config.in
-@@ -67,6 +67,12 @@
- /* Define to 1 if you have the <fcntl.h> header file. */
- #undef HAVE_FCNTL_H
- 
-+/* Define to 1 if you have the `fseeko' function. */
-+#undef HAVE_FSEEKO
-+
-+/* Define to 1 if you have the `fseeko64' function. */
-+#undef HAVE_FSEEKO64
-+
- /* Define to 1 if you have the `getc_unlocked' function. */
- #undef HAVE_GETC_UNLOCKED
- 
---- a/binutils/configure
-+++ b/binutils/configure
-@@ -13155,7 +13155,7 @@ $as_echo "#define HAVE_MMAP 1" >>confdefs.h
- fi
- rm -f conftest.mmap conftest.txt
- 
--for ac_func in getc_unlocked mkdtemp mkstemp utimensat utimes
-+for ac_func in getc_unlocked mkdtemp mkstemp utimensat utimes fseeko fseeko64
- do :
-   as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
- ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
+  error: unknown type name 'off64_t'
+  warning: implicit declaration of function 'fseeko64'
+
+For this build system we only need a portable host-side implementation.
+Prefer fseeko/off_t when available and fall back to fseek/long.
+
 --- a/binutils/readelf.c
 +++ b/binutils/readelf.c
-@@ -177,6 +177,17 @@
- #define offsetof(TYPE, MEMBER) ((size_t) &(((TYPE *) 0)->MEMBER))
- #endif
- 
-+#if defined (HAVE_FSEEKO64)
-+#define FSEEK_FUNC fseeko64
-+#define FSEEK_OFF_TYPE off64_t
-+#elif defined (HAVE_FSEEKO)
-+#define FSEEK_FUNC fseeko
-+#define FSEEK_OFF_TYPE off_t
-+#else
-+#define FSEEK_FUNC fseek
-+#define FSEEK_OFF_TYPE long
-+#endif
-+
- typedef struct elf_section_list
+@@ -372,16 +372,10 @@ enum versioned_symbol_info
+ static int
+ fseek64 (FILE *stream, int64_t offset, int whence)
  {
-   Elf_Internal_Shdr *        hdr;
-@@ -479,7 +490,7 @@ get_data (void *var,
-       return NULL;
-     }
- 
--  if (fseek (filedata->handle, filedata->archive_file_offset + offset,
-+  if (FSEEK_FUNC (filedata->handle, (FSEEK_OFF_TYPE) filedata->archive_file_offset + offset,
- 	     SEEK_SET))
+-#if defined (HAVE_FSEEKO64)
+-  off64_t o = offset;
+-  if (o != offset)
+-    {
+-      errno = EINVAL;
+-      return -1;
+-    }
+-  return fseeko64 (stream, o, whence);
+-#elif defined (HAVE_FSEEKO)
++#if defined (HAVE_FSEEKO)
+   off_t o = offset;
+   if (o != offset)
      {
-       if (reason)
-@@ -6262,8 +6273,8 @@ the .dynamic section is not the same as the dynamic segment\n"));
- 	  if (segment->p_offset >= filedata->file_size
- 	      || segment->p_filesz > filedata->file_size - segment->p_offset
- 	      || segment->p_filesz - 1 >= (size_t) -2
--	      || fseek (filedata->handle,
--			filedata->archive_file_offset + (long) segment->p_offset,
-+	      || FSEEK_FUNC (filedata->handle,
-+			(FSEEK_OFF_TYPE) filedata->archive_file_offset + (long) segment->p_offset,
- 			SEEK_SET))
- 	    error (_("Unable to find program interpreter name\n"));
- 	  else
-@@ -11035,8 +11046,8 @@ get_num_dynamic_syms (Filedata * filedata)
- 	  && filedata->file_header.e_ident[EI_CLASS] == ELFCLASS64)
- 	hash_ent_size = 8;
- 
--      if (fseek (filedata->handle,
--		 (filedata->archive_file_offset
-+      if (FSEEK_FUNC (filedata->handle,
-+		 ((FSEEK_OFF_TYPE) filedata->archive_file_offset
- 		  + offset_from_vma (filedata, filedata->dynamic_info[DT_HASH],
- 				     sizeof nb + sizeof nc)),
- 		 SEEK_SET))
-@@ -11088,8 +11099,8 @@ get_num_dynamic_syms (Filedata * filedata)
- 	  uint64_t buckets_vma;
- 	  unsigned long hn;
- 
--	  if (fseek (filedata->handle,
--		     (filedata->archive_file_offset
-+	  if (FSEEK_FUNC (filedata->handle,
-+		     ((FSEEK_OFF_TYPE) filedata->archive_file_offset
- 		      + offset_from_vma (filedata,
- 					 filedata->dynamic_info_DT_GNU_HASH,
- 					 sizeof nb)),
-@@ -11114,8 +11125,8 @@ get_num_dynamic_syms (Filedata * filedata)
- 	  else
- 	    buckets_vma += bitmaskwords * 8;
- 
--	  if (fseek (filedata->handle,
--		     (filedata->archive_file_offset
-+	  if (FSEEK_FUNC (filedata->handle,
-+		     ((FSEEK_OFF_TYPE) filedata->archive_file_offset
- 		      + offset_from_vma (filedata, buckets_vma, 4)),
- 		     SEEK_SET))
- 	    {
-@@ -11144,8 +11155,8 @@ get_num_dynamic_syms (Filedata * filedata)
- 
- 	  maxchain -= filedata->gnusymidx;
- 
--	  if (fseek (filedata->handle,
--		     (filedata->archive_file_offset
-+	  if (FSEEK_FUNC (filedata->handle,
-+		     ((FSEEK_OFF_TYPE) filedata->archive_file_offset
- 		      + offset_from_vma (filedata,
- 					 buckets_vma + 4 * (filedata->ngnubuckets
- 							    + maxchain),
-@@ -11171,8 +11182,8 @@ get_num_dynamic_syms (Filedata * filedata)
- 	    }
- 	  while ((byte_get (nb, 4) & 1) == 0);
- 
--	  if (fseek (filedata->handle,
--		     (filedata->archive_file_offset
-+	  if (FSEEK_FUNC (filedata->handle,
-+		     ((FSEEK_OFF_TYPE) filedata->archive_file_offset
- 		      + offset_from_vma (filedata, (buckets_vma
- 						    + 4 * filedata->ngnubuckets),
- 				     4)),
-@@ -11190,8 +11201,8 @@ get_num_dynamic_syms (Filedata * filedata)
- 	  if (filedata->dynamic_info_DT_MIPS_XHASH)
- 	    {
- 
--	      if (fseek (filedata->handle,
--			 (filedata->archive_file_offset
-+	      if (FSEEK_FUNC (filedata->handle,
-+			 ((FSEEK_OFF_TYPE) filedata->archive_file_offset
- 			  + offset_from_vma (filedata, (buckets_vma
- 							+ 4 * (filedata->ngnubuckets
- 							   + maxchain)), 4)),
-@@ -22546,7 +22557,7 @@ process_archive (Filedata * filedata, bool is_thin_archive)
- 	      ret = false;
- 	    }
- 
--	  if (fseek (filedata->handle, current_pos, SEEK_SET) != 0)
-+	  if (FSEEK_FUNC (filedata->handle, (FSEEK_OFF_TYPE) current_pos, SEEK_SET) != 0)
- 	    {
- 	      error (_("%s: failed to seek back to start of object files "
- 		       "in the archive\n"),
-@@ -22573,7 +22584,8 @@ process_archive (Filedata * filedata, bool is_thin_archive)
- 	  char * qualified_name;
- 
- 	  /* Read the next archive header.  */
--	  if (fseek (filedata->handle, arch.next_arhdr_offset, SEEK_SET) != 0)
-+	  if (FSEEK_FUNC (filedata->handle, (FSEEK_OFF_TYPE) arch.next_arhdr_offset,
-+			  SEEK_SET) != 0)
- 	    {
- 	      error (_("%s: failed to seek to next archive header\n"),
- 		     arch.file_name);
-@@ -22683,7 +22695,8 @@ process_archive (Filedata * filedata, bool is_thin_archive)
- 	  /* The nested archive file will have been opened and setup by
- 	     get_archive_member_name.  */
- 
--	  if (fseek (nested_arch.file, filedata->archive_file_offset, SEEK_SET) != 0)
-+	  if (FSEEK_FUNC (nested_arch.file, (FSEEK_OFF_TYPE) filedata->archive_file_offset,
-+			  SEEK_SET) != 0)
- 	    {
- 	      error (_("%s: failed to seek to archive member.\n"),
- 		     qualified_name);
+       errno = EINVAL;
+       return -1;

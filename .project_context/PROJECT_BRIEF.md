@@ -1,47 +1,37 @@
-## 项目概览
+# 项目概览
 
-基于 ImmortalWrt / OpenWrt 构建树的路由器固件项目，当前任务是在保留官方 LuCI 后台的前提下，新增一套自定义 Web 后台首页。
+基于 ImmortalWrt 的固件源码仓库，面向路由器等嵌入式设备构建系统镜像、工具链与软件包。
 
-## 技术栈
+# 技术栈
 
-- OpenWrt / ImmortalWrt Buildroot
-- uhttpd
-- LuCI
-- shell CGI
-- HTML / CSS / JavaScript
+- GNU Make 构建系统
+- Linux 交叉编译工具链
+- OpenWrt / ImmortalWrt 包与目标平台目录结构
 
-## 目录结构
+# 目录结构
 
-- `package/`：软件包源码与自定义功能
-- `package/network/services/uhttpd/`：HTTP 服务默认实现
-- `package/mtk/applications/`：平台相关应用包
-- `files/`：基础文件覆盖
-- `target/`：目标平台与镜像定义
+- `toolchain/`：交叉工具链构建
+- `package/`：软件包定义
+- `target/`：目标平台与设备配置
+- `include/`：顶层构建规则与公共宏
 
-## 关键模块
+# 关键模块
 
-- `uhttpd`：Web 服务与多实例监听
-- `LuCI`：官方后台与现有配置入口
-- `package/mtk/applications/luci-app-openfi/`：现有自定义后台功能参考
-- `package/mtk/applications/router-webui/`：自定义后台独立系统包
-- `toolchain/binutils/`：宿主工具链 binutils 版本选择、补丁装载与 host 构建入口
+- `toolchain/binutils/`：binutils 下载、补丁、配置与宿主机构建入口
 
-## 构建与运行
+# 构建与运行
 
-- 通过 OpenWrt Buildroot 编译固件
-- Web 默认由 `uhttpd` 提供
-- LuCI 默认入口为 `/cgi-bin/luci`
-- 工具链由 `toolchain/` 下各模块先构建宿主工具，再构建目标链路
+- 常规入口为仓库根目录执行 `make`
+- `toolchain/binutils/Makefile` 根据 `CONFIG_BINUTILS_VERSION` 选择源码版本和补丁目录
 
-## 当前任务状态
+# 当前任务状态
 
-- 当前任务聚焦 `toolchain/binutils` 在 `binutils 2.42 + musl host headers` 组合下的构建失败。
-- 已确认失败中断点位于 `binutils/readelf.c` 编译阶段，错误为 `off64_t` 未定义与 `fseeko64` 隐式声明，不是前面的 `ld: skipping incompatible ...` 告警。
-- 已确认仓库 `toolchain/binutils/patches/2.42/` 缺少对应兼容补丁；当前实现采用最小范围修复，仅为 `2.42` 新增 `readelf` 大文件偏移兼容补丁，不调整全局 `HOST_CFLAGS` / `HOST_LDFLAGS`。
-- 当前下一步为校验新增补丁文件内容与挂载位置是否正确，再由你在实际 Linux/CI 环境复编验证。
+- 已定位 `toolchain/binutils` 在 `binutils 2.42` 构建阶段失败
+- 已确认当前阻塞根因是 `binutils/readelf.c` 在 musl 宿主构建时错误进入 `off64_t` / `fseeko64` 分支
+- 已恢复 `patches/2.42/004-readelf-use-fseeko64-or-fseeko-if-possible.patch`，并改为仅修正 `readelf.c` 的 `fseek64()` 分支选择
+- 下一步：校验补丁内容与补丁序列，然后在构建环境中重新验证
 
-## 下一步
+# 下一步
 
-- 校验 `toolchain/binutils/patches/2.42/` 新增补丁命名与内容
-- 在实际构建环境重新执行 `make toolchain/binutils/compile` 或完整 `make` 验证
-- 若仍失败，再继续检查宿主 `gcc` wrapper 是否错误注入目标 sysroot
+- 校验 `2.42` 目录补丁序列与新 `004` 内容
+- 在构建环境中重新验证 `binutils 2.42` 补丁应用与编译流程
