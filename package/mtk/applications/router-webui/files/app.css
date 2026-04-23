@@ -31,9 +31,7 @@ body {
 	font-size: 14px;
 	line-height: 1.5;
 	color: var(--text-main);
-	background:
-		linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(238, 245, 252, 0.96)),
-		var(--page-bg);
+	background: var(--page-bg);
 }
 
 a {
@@ -264,7 +262,7 @@ textarea {
 	justify-content: space-between;
 	gap: 18px;
 	padding: 18px 22px;
-	background: linear-gradient(180deg, var(--banner-bg), #ffffff);
+	background: #fff;
 }
 
 .page-title {
@@ -308,7 +306,7 @@ textarea {
 	padding: 16px;
 	border-radius: var(--radius);
 	border: 1px solid var(--line);
-	background: linear-gradient(180deg, #ffffff, #f9fcff);
+	background: #fff;
 }
 
 .overview-icon {
@@ -316,7 +314,7 @@ textarea {
 	height: 72px;
 	margin: 0 auto 10px;
 	border-radius: 16px;
-	background: linear-gradient(180deg, #e6f3ff, #c6e1ff);
+	background: #eaf4ff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -353,7 +351,7 @@ textarea {
 }
 
 .metric-block span,
-.device-item span,
+.device-row span,
 .field-row span {
 	display: block;
 	font-size: 12px;
@@ -361,7 +359,7 @@ textarea {
 }
 
 .metric-block strong,
-.device-item strong,
+.device-row strong,
 .field-row strong {
 	display: block;
 	margin-top: 6px;
@@ -434,8 +432,8 @@ textarea {
 	gap: 18px;
 	padding: 16px 18px;
 	border-radius: 12px;
-	background: linear-gradient(180deg, #f3fbff, #edf7ff);
-	border: 1px solid #d8ebfb;
+	background: #fff;
+	border: 1px solid var(--line);
 	text-decoration: none;
 }
 
@@ -476,17 +474,29 @@ textarea {
 	margin-top: 6px;
 }
 
-.device-grid {
+.device-list {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 12px;
+	border-top: 0;
 }
 
-.device-item {
+.device-row {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
 	padding: 14px;
-	border-radius: 12px;
 	border: 1px solid var(--line);
-	background: linear-gradient(180deg, #ffffff, #f9fcff);
+	border-radius: 12px;
+	background: #fff;
+}
+
+.device-row strong {
+	margin-top: 0;
+	font-size: 15px;
+	font-weight: 600;
+	text-align: left;
 }
 
 .qr-strip {
@@ -494,10 +504,12 @@ textarea {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 14px;
 	margin-top: 16px;
+	padding-top: 0;
+	border-top: 0;
 }
 
 .qr-card {
-	padding: 14px;
+	padding: 14px 12px;
 	border: 1px solid var(--line);
 	border-radius: 12px;
 	background: #fff;
@@ -535,7 +547,7 @@ textarea {
 .notice-bar {
 	padding: 14px 16px;
 	border-radius: 12px;
-	background: linear-gradient(180deg, #f4faff, #ffffff);
+	background: #fff;
 	color: var(--text-sub);
 }
 
@@ -599,9 +611,20 @@ textarea {
 		align-items: flex-start;
 	}
 
-	.device-grid,
 	.qr-strip,
 	.overview-body {
 		grid-template-columns: 1fr;
+	}
+
+	.device-list {
+		grid-template-columns: 1fr;
+	}
+
+	.device-row {
+		padding: 12px 14px;
+	}
+
+	.device-row strong {
+		text-align: left;
 	}
 }
