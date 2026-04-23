@@ -1,0 +1,19 @@
+{
+  "hostname": "TR3000",
+  "lan_ip": "10.0.0.1",
+  "uptime": "2天8小时16分钟",
+  "client_count": 7,
+  "wan_up": true,
+  "wan_proto": "dhcp",
+  "wan_ip": "100.87.23.14",
+  "loadavg": "0.16 0.12 0.08",
+  "wifi_count": 2,
+  "memory_usage": "38% (199684KB / 524288KB)",
+  "max_temp": "47.8°C",
+  "board_name": "Cudy TR3000",
+  "firmware": "ImmortalWrt MT7981 Preview",
+  "ssids": [
+    "TR3000-5G",
+    "TR3000-2.4G"
+  ]
+}

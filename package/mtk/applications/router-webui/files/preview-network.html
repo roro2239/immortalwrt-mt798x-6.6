@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>网络预览</title>
+	<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+	<div class="app-shell">
+		<header class="topbar">
+			<div class="topbar-brand">
+				<button class="nav-toggle" id="nav-toggle" type="button" aria-label="切换导航"></button>
+				<div>
+					<p class="brand-mark">DEVICE CENTER</p>
+					<h1>设备管理中心</h1>
+				</div>
+			</div>
+			<div class="topbar-actions">
+				<div class="topbar-meta">
+					<span>主机名</span>
+					<strong id="hostname-top">加载中</strong>
+				</div>
+				<a class="topbar-link" id="official-link" href="#" target="_blank" rel="noopener noreferrer">进入高级管理</a>
+			</div>
+		</header>
+
+		<div class="workspace">
+			<aside class="sidebar" id="sidebar">
+				<nav class="sidebar-nav">
+					<a class="nav-item" href="/">
+						<span class="nav-icon"><img src="/assets/icons/home.svg" alt="" aria-hidden="true"></span>
+						<span>首页</span>
+					</a>
+					<a class="nav-item active" id="nav-network" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="nav-icon"><img src="/assets/icons/world.svg" alt="" aria-hidden="true"></span>
+						<span>网络</span>
+					</a>
+					<a class="nav-item" id="nav-wireless" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="nav-icon"><img src="/assets/icons/access-point.svg" alt="" aria-hidden="true"></span>
+						<span>Wi‑Fi</span>
+					</a>
+					<a class="nav-item" id="nav-devices" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="nav-icon"><img src="/assets/icons/devices-pc.svg" alt="" aria-hidden="true"></span>
+						<span>接入设备</span>
+					</a>
+					<a class="nav-item" id="nav-system" href="#" target="_blank" rel="noopener noreferrer">
+						<span class="nav-icon"><img src="/assets/icons/settings.svg" alt="" aria-hidden="true"></span>
+						<span>系统</span>
+					</a>
+				</nav>
+			</aside>
+
+			<main class="main-content">
+				<section class="page-banner">
+					<div class="page-title">
+						<span class="page-title-icon"><img src="/assets/icons/world.svg" alt="" aria-hidden="true"></span>
+						<div>
+							<h2>网络</h2>
+						</div>
+					</div>
+				</section>
+
+				<section class="content-grid">
+					<div class="stack-column">
+						<article class="panel-card">
+							<div class="panel-head">
+								<span class="panel-accent"></span>
+								<h3>连接状态</h3>
+							</div>
+							<div class="field-list">
+								<div class="field-row">
+									<span>连接状态</span>
+									<strong id="wan-status">加载中</strong>
+								</div>
+								<div class="field-row">
+									<span>协议</span>
+									<strong id="wan-proto">加载中</strong>
+								</div>
+								<div class="field-row">
+									<span>IPv4 地址</span>
+									<strong id="wan-ip">加载中</strong>
+								</div>
+								<div class="field-row">
+									<span>LAN 地址</span>
+									<strong id="lan-ip">加载中</strong>
+								</div>
+							</div>
+						</article>
+					</div>
+
+					<div class="stack-column">
+						<article class="panel-card panel-card-note">
+							<div class="panel-head">
+								<span class="panel-accent"></span>
+								<h3>预览说明</h3>
+							</div>
+							<section class="notice-bar" id="status-message">这是本地网络页面预览。</section>
+						</article>
+					</div>
+				</section>
+			</main>
+		</div>
+	</div>
+
+	<script src="/assets/app.js"></script>
+</body>
+</html>

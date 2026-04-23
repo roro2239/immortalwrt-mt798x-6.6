@@ -50,6 +50,7 @@
 - 已根据最新反馈回调“设备信息”区视觉：不再使用生硬分隔线表格，改为纯色轻卡片条目；二维码区也恢复为同风格轻卡片，但继续保持无渐变。
 - 已按最新需求重做首页 3 个总览模块的版式：改为“上方图标标题 + 下方信息面板”的结构，并为信息面板增加顶部连接尖角，整体更接近参考后台首页语法。
 - 已在首页标题左侧补入首页图标，直接复用现有 `home.svg` 资源，与页面当前图标体系保持一致。
+- 已增强本地预览模式：预览脚本新增 `/preview/network`、`/preview/wifi`、`/preview/devices`、`/preview/system` 路由，并补充对应预览页面；`app.js` 在 `localhost/127.0.0.1` 下会自动改用这些本地页面跳转，不再强制跳 LuCI。
 - 已新增本地预览方案：`scripts/router-webui-preview.ps1` 直接从仓库源码读取 `router-webui` 页面文件，并用 `scripts/router-webui-preview.mock.json` 提供假数据接口，无需编译即可刷新预览 UI。
 
 ## 下一步

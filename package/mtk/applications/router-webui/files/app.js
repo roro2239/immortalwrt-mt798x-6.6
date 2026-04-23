@@ -4,7 +4,19 @@
 	}
 
 	function setText(id, value) {
-		byId(id).textContent = value || "--";
+		var node = byId(id);
+
+		if (node) {
+			node.textContent = value || "--";
+		}
+	}
+
+	function setHref(id, value) {
+		var node = byId(id);
+
+		if (node) {
+			node.href = value;
+		}
 	}
 
 	function firstSsid(ssids) {
@@ -17,12 +29,20 @@
 
 	function setNotice(message, isError) {
 		var node = byId("status-message");
-		node.textContent = message;
-		node.className = isError ? "notice-bar error" : "notice-bar";
+
+		if (node) {
+			node.textContent = message;
+			node.className = isError ? "notice-bar error" : "notice-bar";
+		}
 	}
 
 	function setSsids(ssids) {
 		var list = byId("ssid-list");
+
+		if (!list) {
+			return;
+		}
+
 		list.innerHTML = "";
 
 		if (!Array.isArray(ssids) || ssids.length === 0) {
@@ -43,13 +63,28 @@
 		return "//" + window.location.hostname + ":2239/";
 	}
 
+	function isPreviewMode() {
+		return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+	}
+
+	function previewPath(section) {
+		return "/preview/" + section;
+	}
+
 	function officialPath(path) {
 		return officialUrl().replace(/\/$/, "") + path;
 	}
 
+	function pagePath(section, official) {
+		return isPreviewMode() ? previewPath(section) : officialPath(official);
+	}
+
 	function toggleSidebar() {
 		var sidebar = byId("sidebar");
-		sidebar.classList.toggle("open");
+
+		if (sidebar) {
+			sidebar.classList.toggle("open");
+		}
 	}
 
 	async function loadStatus() {
@@ -95,17 +130,24 @@
 		}
 	}
 
-	byId("official-link").href = officialUrl();
-	byId("nav-network").href = officialPath("/cgi-bin/luci/admin/network/network");
-	byId("nav-wireless").href = officialPath("/cgi-bin/luci/admin/network/wireless");
-	byId("nav-devices").href = officialPath("/cgi-bin/luci/admin/status/routes");
-	byId("nav-system").href = officialPath("/cgi-bin/luci/admin/system/startup");
-	byId("shortcut-official").href = officialUrl();
-	byId("shortcut-network").href = officialPath("/cgi-bin/luci/admin/network/network");
-	byId("shortcut-wireless").href = officialPath("/cgi-bin/luci/admin/network/wireless");
-	byId("shortcut-devices").href = officialPath("/cgi-bin/luci/admin/network/dhcp");
-	byId("shortcut-system").href = officialPath("/cgi-bin/luci/admin/system/startup");
-	byId("nav-toggle").addEventListener("click", toggleSidebar);
+	setHref("official-link", isPreviewMode() ? previewPath("system") : officialUrl());
+	setHref("nav-network", pagePath("network", "/cgi-bin/luci/admin/network/network"));
+	setHref("nav-wireless", pagePath("wifi", "/cgi-bin/luci/admin/network/wireless"));
+	setHref("nav-devices", pagePath("devices", "/cgi-bin/luci/admin/status/routes"));
+	setHref("nav-system", pagePath("system", "/cgi-bin/luci/admin/system/startup"));
+	setHref("shortcut-official", isPreviewMode() ? previewPath("system") : officialUrl());
+	setHref("shortcut-network", pagePath("network", "/cgi-bin/luci/admin/network/network"));
+	setHref("shortcut-wireless", pagePath("wifi", "/cgi-bin/luci/admin/network/wireless"));
+	setHref("shortcut-devices", pagePath("devices", "/cgi-bin/luci/admin/network/dhcp"));
+	setHref("shortcut-system", pagePath("system", "/cgi-bin/luci/admin/system/startup"));
+
+	{
+		var navToggle = byId("nav-toggle");
+
+		if (navToggle) {
+			navToggle.addEventListener("click", toggleSidebar);
+		}
+	}
 
 	loadStatus();
 	window.setInterval(loadStatus, 10000);
