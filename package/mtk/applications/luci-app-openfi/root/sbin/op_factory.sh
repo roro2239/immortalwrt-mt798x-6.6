@@ -1,7 +1,7 @@
 #!/bin/sh
 
 lan_ip="192.168.21.100"
-wan_ip="192.168.6.1"
+wan_ip="10.0.0.1"
 files="/tmp/mfg_result"
 
 rm $files

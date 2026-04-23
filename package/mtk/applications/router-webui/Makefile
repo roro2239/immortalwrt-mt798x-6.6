@@ -11,7 +11,7 @@ define Package/router-webui
   SECTION:=mtk
   CATEGORY:=MTK Properties
   TITLE:=Custom router web UI with official LuCI fallback
-  DEPENDS:=+uhttpd +jsonfilter
+  DEPENDS:=+uhttpd +jsonfilter +luci-base +luci-mod-admin-full
 endef
 
 define Package/router-webui/description

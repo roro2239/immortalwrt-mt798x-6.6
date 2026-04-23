@@ -33,11 +33,12 @@
 
 ## 当前任务状态
 
-- 当前聚焦 GitHub Actions 构建工作流稳定性修复。
-- 已定位 CI 失败根因为 Runner 默认占用系统 `/swapfile`，直接执行 `fallocate /swapfile` 会触发 `Text file busy`。
-- 已将工作流 swap 策略调整为“优先复用现有 swap；仅在无可用 swap 时创建 `/mnt/immortalwrt.swap`”，避免继续改写系统级 `/swapfile`。
-- 已将构建缓存改为显式 `restore/save` 双阶段，并使用 `run_id` 生成新 key，确保每次成功构建后都会写入更新后的缓存，而不是长期复用固定旧 key。
+- 当前任务聚焦两项 Web 默认行为修复：一是自定义首页点击官方后台出现 `The requested URL /cgi-bin/luci/ was not found on this server.`；二是默认后台 LAN 地址从 `192.168.6.1` 调整为 `10.0.0.1`，同时保持设备子域名解析链路不变。
+- 已定位 LuCI 问题根因为 `router-webui` 将官方后台拆到 `:2239`，但包依赖未强制带入 `luci-base` 与 `luci-mod-admin-full`，导致镜像可能只有自定义首页没有 LuCI 运行时。
+- 已补齐 `router-webui` 包依赖，并同步为当前 `.config` 与启用该功能的 `defconfig` 显式选中 `luci-base`、`luci-mod-admin-full`，保证官方后台随镜像一并构建。
+- 已按当前需求调整自定义首页官方入口地址生成逻辑，不再显式拼接 `http`，当前输出为 `//<host>:2239/`。
+- 已将默认 LAN 地址生成入口改为 `10.0.0.1`，并同步更新说明文档与相关产测脚本；`dnsmasq` / `odhcpd` 的 `lan` 域配置保持不变，因此设备子域名链路不受影响。
 
 ## 下一步
 
-- 重新触发 GitHub Actions，确认缓存恢复命中最近可用项，且成功构建后生成新的缓存条目。
+- 校验关键片段，确认默认 LAN 地址已切到 `10.0.0.1`，且 `.lan` 子域名相关默认配置未被改动。

@@ -32,7 +32,7 @@
 	}
 
 	function officialUrl() {
-		return window.location.protocol + "//" + window.location.hostname + ":2239/";
+		return "//" + window.location.hostname + ":2239/";
 	}
 
 	function officialPath(path) {
