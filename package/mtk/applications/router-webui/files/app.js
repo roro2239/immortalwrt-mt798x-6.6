@@ -72,9 +72,7 @@
 			setText("hostname", data.hostname);
 			setText("hostname-top", data.hostname);
 			setText("lan-ip", data.lan_ip);
-			setText("lan-ip-side", data.lan_ip);
 			setText("uptime", data.uptime);
-			setText("hero-client-count", String(data.client_count || 0));
 			setText("wan-status", data.wan_up ? "已连接" : "未连接");
 			setText("wan-proto", data.wan_proto);
 			setText("wan-ip", data.wan_ip);
@@ -107,7 +105,6 @@
 	byId("shortcut-wireless").href = officialPath("/cgi-bin/luci/admin/network/wireless");
 	byId("shortcut-devices").href = officialPath("/cgi-bin/luci/admin/network/dhcp");
 	byId("shortcut-system").href = officialPath("/cgi-bin/luci/admin/system/startup");
-	byId("refresh-button").addEventListener("click", loadStatus);
 	byId("nav-toggle").addEventListener("click", toggleSidebar);
 
 	loadStatus();

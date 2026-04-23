@@ -28,8 +28,7 @@
 		<div class="workspace">
 			<aside class="sidebar" id="sidebar">
 				<div class="sidebar-head">
-					<div class="sidebar-logo">管理菜单</div>
-					<div class="sidebar-subtitle">快速访问设备功能</div>
+					<div class="sidebar-logo" aria-hidden="true"></div>
 				</div>
 				<nav class="sidebar-nav">
 					<a class="nav-item active" href="#dashboard">
@@ -53,24 +52,15 @@
 						<span>系统</span>
 					</a>
 				</nav>
-				<div class="sidebar-summary">
-					<div class="summary-label">LAN 地址</div>
-					<div class="summary-value" id="lan-ip-side">加载中</div>
-					<div class="summary-label">在线终端</div>
-					<div class="summary-value" id="hero-client-count">加载中</div>
-				</div>
 			</aside>
 
 			<main class="main-content" id="dashboard">
 				<section class="page-banner">
 					<div class="page-title">
-						<span class="page-title-icon"></span>
 						<div>
 							<h2>首页</h2>
-							<p>集中查看网络、无线与系统状态，常用入口统一收敛。</p>
 						</div>
 					</div>
-					<button class="primary-btn" id="refresh-button" type="button">刷新状态</button>
 				</section>
 
 				<section class="overview-panel">
@@ -146,28 +136,24 @@
 								<a class="feature-item" id="shortcut-network" href="#" target="_blank" rel="noopener noreferrer">
 									<div>
 										<strong>网络设置</strong>
-										<span>WAN、LAN、接口与协议</span>
 									</div>
 									<i></i>
 								</a>
 								<a class="feature-item" id="shortcut-wireless" href="#" target="_blank" rel="noopener noreferrer">
 									<div>
 										<strong>Wi‑Fi 设置</strong>
-										<span>SSID、加密与无线参数</span>
 									</div>
 									<i></i>
 								</a>
 								<a class="feature-item" id="shortcut-devices" href="#" target="_blank" rel="noopener noreferrer">
 									<div>
 										<strong>终端管理</strong>
-										<span>查看 DHCP、ARP 与接入设备</span>
 									</div>
 									<i></i>
 								</a>
 								<a class="feature-item" id="shortcut-system" href="#" target="_blank" rel="noopener noreferrer">
 									<div>
 										<strong>系统服务</strong>
-										<span>启动项、维护与系统配置</span>
 									</div>
 									<i></i>
 								</a>
@@ -205,7 +191,7 @@
 									<span class="panel-accent"></span>
 									<h3>设备信息</h3>
 								</div>
-								<a id="shortcut-official" href="#" target="_blank" rel="noopener noreferrer">详情</a>
+								<a id="shortcut-official" href="#" target="_blank" rel="noopener noreferrer"></a>
 							</div>
 							<div class="device-grid">
 								<div class="device-item">
@@ -236,11 +222,9 @@
 							<div class="qr-strip">
 								<div class="qr-card">
 									<div class="qr-placeholder"></div>
-									<span>高级管理入口</span>
 								</div>
 								<div class="qr-card">
 									<div class="qr-placeholder qr-placeholder-alt"></div>
-									<span>设备信息卡</span>
 								</div>
 							</div>
 						</article>
