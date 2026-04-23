@@ -29,6 +29,7 @@ define Package/router-webui/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DIR) $(1)/www-custom
 	$(INSTALL_DIR) $(1)/www-custom/assets
+	$(INSTALL_DIR) $(1)/www-custom/assets/icons
 	$(INSTALL_DIR) $(1)/www-custom/cgi-bin/router
 	$(INSTALL_DIR) $(1)/www-official
 	$(INSTALL_BIN) ./files/99-router-webui $(1)/etc/uci-defaults/99-router-webui
@@ -36,6 +37,7 @@ define Package/router-webui/install
 	$(INSTALL_DATA) ./files/custom-index.html $(1)/www-custom/index.html
 	$(INSTALL_DATA) ./files/app.css $(1)/www-custom/assets/app.css
 	$(INSTALL_DATA) ./files/app.js $(1)/www-custom/assets/app.js
+	$(CP) ./files/assets/icons/*.svg $(1)/www-custom/assets/icons/
 	$(INSTALL_DATA) ./files/official-index.html $(1)/www-official/index.html
 endef
 

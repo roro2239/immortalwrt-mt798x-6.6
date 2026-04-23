@@ -211,40 +211,18 @@ textarea {
 }
 
 .nav-icon {
-	width: 16px;
-	height: 16px;
-	border-radius: 50%;
-	background: linear-gradient(180deg, #d6ebff, #8fc7ff);
-	position: relative;
+	width: 18px;
+	height: 18px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	flex: 0 0 auto;
 }
 
-.nav-icon::after {
-	content: "";
-	position: absolute;
-	inset: 4px;
-	border-radius: 50%;
-	background: var(--accent);
-}
-
-.nav-icon-network {
-	border-radius: 4px;
-}
-
-.nav-icon-network::after {
-	inset: 3px;
-	border-radius: 2px;
-}
-
-.nav-icon-device::after {
-	inset: 3px 4px;
-	border-radius: 3px;
-}
-
-.nav-icon-system::after {
-	inset: 2px;
-	border: 2px solid var(--accent);
-	background: transparent;
+.nav-icon img {
+	width: 18px;
+	height: 18px;
+	display: block;
 }
 
 .sidebar-summary {
@@ -339,61 +317,16 @@ textarea {
 	margin: 0 auto 10px;
 	border-radius: 16px;
 	background: linear-gradient(180deg, #e6f3ff, #c6e1ff);
-	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
 }
 
-.overview-icon::after,
-.overview-icon::before {
-	content: "";
-	position: absolute;
-	background: var(--accent);
-}
-
-.overview-icon-network::before {
-	left: 20px;
-	bottom: 16px;
-	width: 8px;
-	height: 18px;
-	box-shadow: 14px -8px 0 var(--accent), 28px -16px 0 var(--accent);
-}
-
-.overview-icon-network::after {
-	display: none;
-}
-
-.overview-icon-wifi::before {
-	left: 18px;
-	right: 18px;
-	top: 24px;
-	height: 18px;
-	border-radius: 18px 18px 0 0;
-	background: transparent;
-	border: 4px solid var(--accent);
-	border-bottom: 0;
-}
-
-.overview-icon-wifi::after {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	left: 30px;
-	top: 42px;
-}
-
-.overview-icon-system::before {
-	left: 20px;
-	right: 20px;
-	top: 20px;
-	height: 8px;
-	box-shadow: 0 14px 0 var(--accent), 0 28px 0 var(--accent);
-}
-
-.overview-icon-system::after {
-	right: 20px;
-	top: 20px;
-	width: 26px;
-	height: 36px;
-	clip-path: polygon(0 0, 100% 0, 50% 100%);
+.overview-icon img {
+	width: 38px;
+	height: 38px;
+	display: block;
 }
 
 .overview-card h3 {
@@ -516,27 +449,6 @@ textarea {
 	margin-top: 4px;
 	color: var(--text-sub);
 	font-size: 13px;
-}
-
-.feature-item i {
-	width: 24px;
-	height: 24px;
-	border-radius: 50%;
-	background: linear-gradient(180deg, #8cc6ff, #0f87f7);
-	position: relative;
-	flex: 0 0 auto;
-}
-
-.feature-item i::after {
-	content: "";
-	position: absolute;
-	left: 8px;
-	top: 6px;
-	width: 7px;
-	height: 7px;
-	border-top: 2px solid #fff;
-	border-right: 2px solid #fff;
-	transform: rotate(45deg);
 }
 
 .field-list {
