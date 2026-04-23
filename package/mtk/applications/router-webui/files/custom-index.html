@@ -57,6 +57,7 @@
 			<main class="main-content" id="dashboard">
 				<section class="page-banner">
 					<div class="page-title">
+						<span class="page-title-icon"><img src="/assets/icons/home.svg" alt="" aria-hidden="true"></span>
 						<div>
 							<h2>首页</h2>
 						</div>
@@ -67,11 +68,14 @@
 					<div class="overview-line"></div>
 					<div class="overview-grid">
 						<article class="overview-card">
-							<div class="overview-icon">
-								<img src="/assets/icons/chart-bar.svg" alt="" aria-hidden="true">
+							<div class="overview-head">
+								<div class="overview-icon">
+									<img src="/assets/icons/chart-bar.svg" alt="" aria-hidden="true">
+								</div>
+								<h3>网络</h3>
 							</div>
-							<h3>网络</h3>
-							<div class="overview-body">
+							<div class="overview-sheet">
+								<div class="overview-body">
 								<div class="metric-block">
 									<span>连接状态</span>
 									<strong id="wan-status">加载中</strong>
@@ -84,15 +88,19 @@
 									<span>IPv4 地址</span>
 									<strong id="wan-ip">加载中</strong>
 								</div>
+								</div>
 							</div>
 						</article>
 
 						<article class="overview-card">
-							<div class="overview-icon">
-								<img src="/assets/icons/access-point.svg" alt="" aria-hidden="true">
+							<div class="overview-head">
+								<div class="overview-icon">
+									<img src="/assets/icons/access-point.svg" alt="" aria-hidden="true">
+								</div>
+								<h3>Wi‑Fi</h3>
 							</div>
-							<h3>Wi‑Fi</h3>
-							<div class="overview-body">
+							<div class="overview-sheet">
+								<div class="overview-body">
 								<div class="metric-block">
 									<span>启用 SSID</span>
 									<strong id="wifi-count">加载中</strong>
@@ -105,15 +113,19 @@
 									<span>主 Wi‑Fi</span>
 									<strong id="primary-ssid">加载中</strong>
 								</div>
+								</div>
 							</div>
 						</article>
 
 						<article class="overview-card">
-							<div class="overview-icon">
-								<img src="/assets/icons/settings.svg" alt="" aria-hidden="true">
+							<div class="overview-head">
+								<div class="overview-icon">
+									<img src="/assets/icons/settings.svg" alt="" aria-hidden="true">
+								</div>
+								<h3>设备状态</h3>
 							</div>
-							<h3>设备状态</h3>
-							<div class="overview-body">
+							<div class="overview-sheet">
+								<div class="overview-body">
 								<div class="metric-block">
 									<span>CPU 负载</span>
 									<strong id="loadavg">加载中</strong>
@@ -125,6 +137,7 @@
 								<div class="metric-block metric-block-wide">
 									<span>最高温度</span>
 									<strong id="max-temp">加载中</strong>
+								</div>
 								</div>
 							</div>
 						</article>

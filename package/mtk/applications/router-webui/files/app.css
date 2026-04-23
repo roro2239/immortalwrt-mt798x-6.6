@@ -268,7 +268,22 @@ textarea {
 .page-title {
 	display: flex;
 	align-items: center;
-	gap: 0;
+	gap: 10px;
+}
+
+.page-title-icon {
+	width: 20px;
+	height: 20px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+}
+
+.page-title-icon img {
+	width: 20px;
+	height: 20px;
+	display: block;
 }
 
 .page-title h2 {
@@ -298,21 +313,30 @@ textarea {
 .overview-grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 16px;
+	gap: 28px;
 	position: relative;
 }
 
 .overview-card {
-	padding: 16px;
-	border-radius: var(--radius);
-	border: 1px solid var(--line);
-	background: #fff;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	position: relative;
+	z-index: 1;
+}
+
+.overview-head {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding-bottom: 18px;
 }
 
 .overview-icon {
 	width: 72px;
 	height: 72px;
-	margin: 0 auto 10px;
+	margin: 0 auto 12px;
 	border-radius: 16px;
 	background: #eaf4ff;
 	display: flex;
@@ -328,22 +352,52 @@ textarea {
 }
 
 .overview-card h3 {
-	margin: 0 0 14px;
+	margin: 0;
 	text-align: center;
 	font-size: 18px;
+}
+
+.overview-sheet {
+	position: relative;
+	padding: 22px 18px 18px;
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	background: #fff;
+}
+
+.overview-sheet::before,
+.overview-sheet::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.overview-sheet::before {
+	top: -13px;
+	border-left: 12px solid transparent;
+	border-right: 12px solid transparent;
+	border-bottom: 13px solid var(--line);
+}
+
+.overview-sheet::after {
+	top: -12px;
+	border-left: 11px solid transparent;
+	border-right: 11px solid transparent;
+	border-bottom: 12px solid #fff;
 }
 
 .overview-body {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 10px;
+	gap: 18px 22px;
 }
 
 .metric-block {
-	padding: 12px;
-	border-radius: 10px;
-	border: 1px solid var(--line);
-	background: #ffffff;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	min-width: 0;
 }
 
 .metric-block-wide {
